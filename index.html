@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broadcast example</title>
+    <link href="style.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+    <div>
+        <input id="inputMessage" type="text" />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <h1>Messages</h1>
+    <div id="broadcasted_message">
+    </div>
+    <script>
+        var channel = new BroadcastChannel("my_channel");
+        channel.onmessage = function (payload) {
+            appendMessage("Recieved:" + payload.data);
+        }
+
+        function sendMessage() {
+            var input = document.getElementById("inputMessage");
+            var message = input.value;
+            channel.postMessage(message);
+            appendMessage("Sent:" + message);
+            input.value = "";
+        }
+
+        function appendMessage(message) {
+            var container = document.getElementById('broadcasted_message');
+            var p = document.createElement('p');
+            p.innerText = message;
+            container.appendChild(p);
+        }
+    </script>
+</body>
+
+</html>
